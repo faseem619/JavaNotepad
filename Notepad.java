@@ -1,7 +1,12 @@
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -21,15 +26,36 @@ public class Notepad {
         textArea.setFont(new Font("Arial",Font.PLAIN,18));
         textArea.setWrapStyleWord(true);
         textArea.setLineWrap(true);
+       
 
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(500,550));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        
+        JPanel topPanel = new JPanel();
+        JLabel sizLabel = new JLabel("Font Size:");
+        JSpinner sizeSpinner = new JSpinner();
+        sizeSpinner.setPreferredSize(new Dimension(45,25));
+        sizeSpinner.setValue(18);
+        sizeSpinner.addChangeListener(new ChangeListener() {
 
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                textArea.setFont(new Font(textArea.getFont().getFamily(),textArea.getFont().getStyle(),(int)sizeSpinner.getValue()));
+                
+            }
+            
+        });
+        topPanel.add(sizLabel);
+        topPanel.add(sizeSpinner);
+
+        
 
         frame.add(scrollPane,BorderLayout.CENTER);
+        frame.add(topPanel,BorderLayout.NORTH);
         frame.pack();
         frame.setVisible(true);
+        textArea.requestFocusInWindow();
 
     }
     
