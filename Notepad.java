@@ -24,7 +24,11 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -47,11 +51,25 @@ public class Notepad implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
-         textArea = new JTextArea();
-        textArea.setBackground(new Color(0xf9fafa));
-        textArea.setFont(new Font("Arial",Font.PLAIN,18));
-        textArea.setWrapStyleWord(true);
-        textArea.setLineWrap(true);
+        // getting serialized object
+         Details D = null;
+         try{
+            FileInputStream fin = new FileInputStream("details.ser");
+            ObjectInputStream Oout = new ObjectInputStream(fin);
+            D = (Details)Oout.readObject();
+            System.out.println("test1"+D.theme.toString());
+            Oout.close();
+            fin.close();
+
+        }catch(Exception e2){e2.printStackTrace();}
+        finally{
+
+            textArea = new JTextArea(); 
+            textArea.setBackground(D!=null?D.theme:new Color(0xf9fafa));
+            textArea.setFont(new Font("Arial",Font.PLAIN,18));
+            textArea.setWrapStyleWord(true);
+            textArea.setLineWrap(true);
+        }
        
 
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -64,7 +82,7 @@ public class Notepad implements ActionListener {
         JSpinner sizeSpinner = new JSpinner();
         sizeSpinner.setPreferredSize(new Dimension(45,25));
         sizeSpinner.setValue(18);
-        sizeSpinner .addChangeListener(new ChangeListener() {
+        sizeSpinner.addChangeListener(new ChangeListener() {
 
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -194,10 +212,24 @@ public class Notepad implements ActionListener {
            }
        }
        else if(e.getSource()==darkThemeItem){
-           textArea.setBackground(Color.LIGHT_GRAY);
+           textArea.setBackground(new Color(0x272727));
+           textArea.setForeground(Color.yellow);
+           textArea.setCaretColor(Color.yellow);
+               try{
+            Details D = new Details(new Color(0x272727));
+            FileOutputStream fout = new FileOutputStream("details.ser");
+            ObjectOutputStream Oout = new ObjectOutputStream(fout);
+            Oout.writeObject(D);
+            Oout.close();
+            fout.close();
+            System.out.println("test");
+
+        }catch(Exception e2){e2.printStackTrace();}
        }
        else if(e.getSource()==lightThemeItem){
            textArea.setBackground(new Color(0xf9fafa));
+            textArea.setForeground(Color.BLACK);
+            textArea.setCaretColor(Color.BLACK);
        }
     }
     
