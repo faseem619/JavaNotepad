@@ -1,3 +1,4 @@
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -6,6 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -31,9 +33,13 @@ public class Notepad implements ActionListener {
     JTextArea textArea;
     JMenuBar menuBar;
     JMenu fileMenu;
+    JMenu editMenu;
     JMenuItem exitItem;
     JMenuItem openItem;
     JMenuItem saveItem;
+    JRadioButtonMenuItem darkThemeItem;
+    JRadioButtonMenuItem lightThemeItem;
+    JMenu themeItem;
     String [] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); 
     Notepad(){
         JFrame frame = new JFrame("Notepad");
@@ -78,16 +84,34 @@ public class Notepad implements ActionListener {
         menuBar = new JMenuBar();
 
         fileMenu = new JMenu("File");
+        editMenu = new JMenu("Edit");
+
 
         exitItem = new JMenuItem("Exit");
         openItem = new JMenuItem("Open");
         saveItem = new JMenuItem("Save");
 
+        ButtonGroup group = new ButtonGroup();
+        darkThemeItem = new JRadioButtonMenuItem("Dark Theme");
+        lightThemeItem = new JRadioButtonMenuItem("Light Theme");
+        group.add(darkThemeItem);
+        group.add(lightThemeItem);
+
+        darkThemeItem.addActionListener(this);
+        lightThemeItem.addActionListener(this);
+
+        themeItem = new JMenu("Theme"); //submenu
+        themeItem.add(darkThemeItem);
+        themeItem.add(lightThemeItem);
+        
+
         fileMenu.add(openItem);
         fileMenu.add(saveItem);
         fileMenu.add(exitItem);
+        editMenu.add(themeItem);
 
         menuBar.add(fileMenu);
+        menuBar.add(editMenu);
 
         exitItem.addActionListener(this);
         openItem.addActionListener(this);
@@ -168,6 +192,12 @@ public class Notepad implements ActionListener {
             }
             
            }
+       }
+       else if(e.getSource()==darkThemeItem){
+           textArea.setBackground(Color.LIGHT_GRAY);
+       }
+       else if(e.getSource()==lightThemeItem){
+           textArea.setBackground(new Color(0xf9fafa));
        }
     }
     
