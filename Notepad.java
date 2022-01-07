@@ -57,7 +57,6 @@ public class Notepad implements ActionListener {
             FileInputStream fin = new FileInputStream("details.ser");
             ObjectInputStream Oout = new ObjectInputStream(fin);
             D = (Details)Oout.readObject();
-            System.out.println("test1"+D.theme.toString());
             Oout.close();
             fin.close();
 
@@ -227,7 +226,6 @@ public class Notepad implements ActionListener {
             Oout.writeObject(D);
             Oout.close();
             fout.close();
-            System.out.println("test");
 
         }catch(Exception e2){e2.printStackTrace();}
        }
@@ -242,7 +240,6 @@ public class Notepad implements ActionListener {
             Oout.writeObject(D);
             Oout.close();
             fout.close();
-            System.out.println("test");
 
         }catch(Exception e2){e2.printStackTrace();}
        }

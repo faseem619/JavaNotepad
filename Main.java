@@ -16,7 +16,6 @@ public class Main{
                 
                 FileOutputStream fout = new FileOutputStream("details.ser");
                 Details D = new Details(new Color(0xf9fafa),Color.BLACK,Color.BLACK);
-                System.out.println("test");
                 ObjectOutputStream Oout = new ObjectOutputStream(fout);
                 Oout.writeObject(D);
                 Oout.close();
