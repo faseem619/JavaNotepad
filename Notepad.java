@@ -69,6 +69,11 @@ public class Notepad implements ActionListener {
             textArea.setFont(new Font("Arial",Font.PLAIN,18));
             textArea.setWrapStyleWord(true);
             textArea.setLineWrap(true);
+            if(D!=null){
+                textArea.setForeground(D.foreGround);
+                textArea.setCaretColor(D.caretColor);
+
+            }
         }
        
 
@@ -216,7 +221,7 @@ public class Notepad implements ActionListener {
            textArea.setForeground(Color.yellow);
            textArea.setCaretColor(Color.yellow);
                try{
-            Details D = new Details(new Color(0x272727));
+            Details D = new Details(new Color(0x272727),Color.yellow,Color.yellow);
             FileOutputStream fout = new FileOutputStream("details.ser");
             ObjectOutputStream Oout = new ObjectOutputStream(fout);
             Oout.writeObject(D);
@@ -230,6 +235,16 @@ public class Notepad implements ActionListener {
            textArea.setBackground(new Color(0xf9fafa));
             textArea.setForeground(Color.BLACK);
             textArea.setCaretColor(Color.BLACK);
+            try{
+            Details D = new Details(new Color(0xf9fafa),Color.BLACK,Color.BLACK);
+            FileOutputStream fout = new FileOutputStream("details.ser");
+            ObjectOutputStream Oout = new ObjectOutputStream(fout);
+            Oout.writeObject(D);
+            Oout.close();
+            fout.close();
+            System.out.println("test");
+
+        }catch(Exception e2){e2.printStackTrace();}
        }
     }
     
