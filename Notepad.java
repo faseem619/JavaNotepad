@@ -1,4 +1,5 @@
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,13 +20,18 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class Notepad implements ActionListener {
     JComboBox<String> fontpicker; 
     JTextArea textArea;
     JMenuBar menuBar;
     JMenu fileMenu;
-    JMenuItem exiItem;
+    JMenuItem exitItem;
+    JMenuItem openItem;
+    JMenuItem saveItem;
     String [] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(); 
     Notepad(){
         JFrame frame = new JFrame("Notepad");
@@ -68,11 +74,22 @@ public class Notepad implements ActionListener {
         //-------menubar-----
 
         menuBar = new JMenuBar();
+
         fileMenu = new JMenu("File");
-        exiItem = new JMenuItem("Exit");
-        fileMenu.add(exiItem);
+
+        exitItem = new JMenuItem("Exit");
+        openItem = new JMenuItem("Open");
+        saveItem = new JMenuItem("Save");
+
+        fileMenu.add(openItem);
+        fileMenu.add(saveItem);
+        fileMenu.add(exitItem);
+
         menuBar.add(fileMenu);
-        exiItem.addActionListener(this);
+
+        exitItem.addActionListener(this);
+        openItem.addActionListener(this);
+        saveItem.addActionListener(this);
 
         /* menubar*/
 
@@ -94,8 +111,34 @@ public class Notepad implements ActionListener {
        if(e.getSource()==fontpicker){  
             textArea.setFont(new Font(fontpicker.getSelectedItem().toString(),textArea.getFont().getStyle(),textArea.getFont().getSize()));
        }
-       else if(e.getSource()==exiItem){
+       else if(e.getSource()==exitItem){
            System.exit(0);
+       }
+       else if(e.getSource()==saveItem){
+           JFileChooser fileChooser = new JFileChooser();
+           fileChooser.setCurrentDirectory(new File("."));
+
+           int response = fileChooser.showSaveDialog(null);
+           if(response==JFileChooser.APPROVE_OPTION){
+               File myFile ;
+               PrintWriter writer = null;
+
+               myFile = new File(fileChooser.getSelectedFile().getAbsolutePath());
+               
+               try {
+                writer = new PrintWriter(myFile);
+                writer.println(textArea.getText());
+            } catch (FileNotFoundException e1) {
+               
+                e1.printStackTrace();
+            }
+            finally{
+
+                writer.close();
+            }
+
+
+           }
        }
     }
     
