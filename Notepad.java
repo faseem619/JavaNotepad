@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -23,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Notepad implements ActionListener {
     JComboBox<String> fontpicker; 
@@ -138,6 +140,33 @@ public class Notepad implements ActionListener {
             }
 
 
+           }
+       }
+       else if(e.getSource()==openItem){
+            JFileChooser fileChooser = new JFileChooser();
+           fileChooser.setCurrentDirectory(new File("."));
+           fileChooser.setFileFilter( new FileNameExtensionFilter("Text Files", "txt"));
+
+           int response = fileChooser.showOpenDialog(null);
+           if(response==JFileChooser.APPROVE_OPTION){
+               Scanner sc = null ;
+               File myFile = new File(fileChooser.getSelectedFile().getAbsolutePath());
+               try {
+                sc = new Scanner(myFile);
+                if(myFile.isFile()){
+                    while(sc.hasNextLine()){
+                        textArea.append(sc.nextLine()+"\n");
+
+                    }
+                }
+            } catch (FileNotFoundException e1) {
+                
+                e1.printStackTrace();
+            }
+            finally{
+                sc.close();
+            }
+            
            }
        }
     }
